@@ -1,0 +1,73 @@
+﻿@model List<PlacementDashboard.Models.Placement>
+
+@{
+    ViewData["Title"] = "Placement Dashboard";
+    int totalStudents = Model.Count;
+    int totalCompanies = Model.Select(x => x.CompanyName).Distinct().Count();
+    decimal averagePackage = totalStudents > 0 ? Model.Average(x => x.PackageLPA) : 0;
+    decimal highestPackage = totalStudents > 0 ? Model.Max(x => x.PackageLPA) : 0;
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Placement Dashboard</h2>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white p-3">
+                <h5>Total Students Placed</h5>
+                <h2>@totalStudents</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-success text-white p-3">
+                <h5>Total Companies</h5>
+                <h2>@totalCompanies</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-info text-white p-3">
+                <h5>Average Package</h5>
+                <h2>@averagePackage.ToString("0.00") LPA</h2>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark p-3">
+                <h5>Highest Package</h5>
+                <h2>@highestPackage.ToString("0.00") LPA</h2>
+            </div>
+        </div>
+    </div>
+
+    <h4>Student Placement Records</h4>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Department</th>
+                <th>Company</th>
+                <th>Job Role</th>
+                <th>Package (LPA)</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.PlacementId</td>
+                    <td>@item.StudentName</td>
+                    <td>@item.Department</td>
+                    <td>@item.CompanyName</td>
+                    <td>@item.JobRole</td>
+                    <td>@item.PackageLPA</td>
+                    <td>@item.PlacementDate.ToString("dd-MM-yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
